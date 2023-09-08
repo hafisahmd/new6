@@ -1,0 +1,204 @@
+{% load static %}
+ 
+  <!-- Start Header -->
+  <header class="header axil-header  header-light header-sticky ">
+    <div class="header-wrap">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-3 col-12">
+                <div class="logo">
+                    <a href="{% url 'home' %}">
+                        <img class="dark-logo" src="{% static 'images/logo/logo-black.png' %}" alt="Blogar logo">
+                        <img class="light-logo" src="{% static 'images/logo/logo-white2.png' %}" alt="Blogar logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-xl-6 d-none d-xl-block">
+                <div class="mainmenu-wrapper">
+                    <nav class="mainmenu-nav">
+                        <!-- Start Mainmanu Nav -->
+                        <ul class="mainmenu">
+                            <li><a href="{% url 'home' %}">Home</a></li>
+
+                            <li><a href="{% url 'about' %}">About</a></li>
+
+                            <li class="menu-item-has-children"><a href="#">Categories</a>
+                                <ul class="axil-submenu">
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="http://13.211.61.227:8000/category_blogs/essential-tax-plans">
+                                            <span class="hover-flip-item">
+                                              <span data-text="Essential Tax Plans">Essential Tax Plans</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="http://13.211.61.227:8000/category_blogs/unlocking-financial-success/">
+                                            <span class="hover-flip-item">
+                                              <span data-text="Unlocking Financial Success">Unlocking Financial Success</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="http://13.211.61.227:8000/category_blogs/business-stretegic-insights/">
+                                            <span class="hover-flip-item">
+                                              <span data-text="Business Stretegic Insights">Business Stretegic Insights</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="http://13.211.61.227:8000/category_blogs/cultivate-your-inner-potential">
+                                            <span class="hover-flip-item">
+                                              <span data-text="Cultivate your inner potential">Cultivate your inner potential</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li><a href="{% url 'blogs' %}">All blogs</a></li>
+                            <li><a href="{% url 'contact_us' %}">Contact</a></li>
+
+                            {% if request.user.is_authenticated %}
+                                <li class="menu-item-has-children"><a href="#">{{request.user.username}}</a>
+                                    <ul class="axil-submenu">
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="{% url 'profile' %}">
+                                          <span class="hover-flip-item">
+                                            <span data-text="My Profile">
+                                              My Profile</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="{% url 'user_notifications' %}">
+                                            <span class="hover-flip-item">
+                                            <span data-text="Notification">
+                                            {% if unseen > 0 %}
+                                            Notification ({{unseen}})
+                                            {% else %}
+                                            Notification
+                                            {% endif %}</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% if user.is_authenticated and user.is_staff %}
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="{% url 'add_blog' %}">
+                                            <span class="hover-flip-item">
+                                            <span data-text="Add Blog">
+                                            Add Blog
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="{% url 'my_blogs' %}">
+                                            <span class="hover-flip-item">
+                                            <span data-text="My Blogs">
+                                            My Blogs
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="{% url 'logout' %}">
+                                            <span class="hover-flip-item">
+                                            <span data-text="Logout">
+                                            Logout
+                                            </span>
+                                        </a>
+                                    </li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li><a href="{% url 'login' %}">Login</a></li>
+                            {% endif %}
+                            </li>
+                          </ul>
+                        <!-- End Mainmanu Nav -->
+                    </nav>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-8 col-md-8 col-sm-9 col-12">
+                <div class="header-search text-end d-flex align-items-center">
+                    <form class="header-search-form d-sm-block d-none" action="{% url 'search_blogs' %}" method="GET">
+                        <div class="axil-search form-group">
+                            <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
+                            <input type="text" name="search" class="form-control" placeholder="Search">
+                        </div>
+                    </form>
+                    <div class="mobile-search-wrapper d-sm-none d-block">
+                        <button class="search-button-toggle"><i class="fal fa-search"></i></button>
+                        <form class="header-search-form" action="{% url 'search_blogs' %}" method="GET">
+                            <div class="axil-search form-group">
+                                <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
+                                <input type="text" name="search" class="form-control" placeholder="Search">
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Start Hamburger Menu  -->
+                    <div class="hamburger-menu d-block d-xl-none">
+                        <div class="hamburger-inner">
+                            <div class="icon"><i class="fal fa-bars"></i></div>
+                        </div>
+                    </div>
+                    <!-- End Hamburger Menu  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Start Header -->
+<!-- Start Mobile Menu Area  -->
+<div class="popup-mobilemenu-area">
+    <div class="inner">
+        <div class="mobile-menu-top">
+            <div class="logo">
+                <a href="index.html">
+                    <img class="dark-logo" src="{% static 'images/logo/logo-black.png' %}" alt="Logo Images">
+                    <img class="light-logo" src="{% static 'images/logo/logo-white2.png' %}" alt="Logo Images">
+                </a>
+            </div>
+            <div class="mobile-close">
+                <div class="icon">
+                    <i class="fal fa-times"></i>
+                </div>
+            </div>
+        </div>
+        <ul class="mainmenu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li class="menu-item-has-children"><a href="#">Categories</a>
+                <ul class="axil-submenu">
+                    <li><a href="http://13.211.61.227:8000/category_blogs/essential-tax-plans">Essential Tax Plans</a></li>
+                    <li><a href="http://13.211.61.227:8000/category_blogs/unlocking-financial-success/">Unlocking Financial Success</a></li>
+                    <li><a href="http://13.211.61.227:8000/category_blogs/business-stretegic-insights/">Business Stretegic Insights</a></li>
+                    <li><a href="http://13.211.61.227:8000/category_blogs/cultivate-your-inner-potential">Cultivate your inner potential</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'blogs' %}">All Blogs</a>
+            <li><a href="{% url 'contact_us' %}">Contact</a>
+            </li>
+            {% if request.user.is_authenticated %}
+            <li class="menu-item-has-children"><a href="#">{{request.user.username}}</a>
+              <ul class="axil-submenu">
+                  <li><a href="{% url 'profile' %}">My profile</a></li>
+                  <li><a href="{% url 'user_notifications' %}">
+                    {% if unseen > 0 %}
+                  Notification ({{unseen}})
+                  {% else %}
+                  Notification
+                  {% endif %}
+                  </a></li>
+                  <li><a href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+<!-- End Mobile Menu Area  -->

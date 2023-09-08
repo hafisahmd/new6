@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Blog {% endblock title %}
+
+{% block content %}
+
+<!-- Start Banner Area  -->
+<div class="axil-breadcrumb-area breadcrumb-style-1 bg-color-grey">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="inner">
+                <a class="hover-flip-item-wrapper" href="{% url 'category_blogs' blog.category.slug %}">
+                    <span class="hover-flip-item">
+                        <span data-text="{{blog.category.title}}">{{blog.category.title}}</span>
+                    </span>
+                </a>
+                  <h1 class="page-title">{{blog.title}}</h1>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End Banner Area  -->
+
+<!-- Start Post List Wrapper  -->
+<div class="axil-post-list-area axil-section-gap bg-color-white">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-8 col-xl-8">
+              <!-- Start About Area  -->
+              <div class="axil-about-us">
+                  <div class="inner">
+                    <div class="post-content">
+
+                        <!-- Post Meta  -->
+                        <div class="post-meta-wrapper">
+                            <div class="post-meta">
+                                <div class="post-author-avatar border-rounded">
+                                    <img src="{% static 'images/post-images/author/author-image-2.png' %}" alt="Author Images">
+                                </div>
+                                <div class="content">
+                                    <h6 class="post-author-name">
+                                        <a class="hover-flip-item-wrapper" href="{% url 'view_user_information' blog.user.username %}">
+                                            <span class="hover-flip-item">
+                                                <span data-text="Admin">Admin</span>
+                                            </span>
+                                        </a>
+                                    </h6>
+                                    <ul class="post-meta-list">
+                                        <li>{{blog.created_date}}</li>
+                                        {% if blog.blog_comments.all.count == 1 %}
+                                        <li>{{blog.blog_comments.all.count}} Comment</li>
+                                        {% else %}
+                                        <li>{{blog.blog_comments.all.count}} Comments</li>
+                                        {% endif %}
+                                        {% if blog.likes.count == 1 %}
+                                        <li>{{blog.likes.count}} Like</li>
+                                        {% else %}
+                                        <li>{{blog.likes.count}} Likes</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                              {% if request.user.is_authenticated %}
+                                  <div class="social-share-block">
+                                      <div class="post-like">
+                                          {{blog.likes.count}}
+                                          {% if liked_by %}
+                                          <a href="javascript:void(0);"><i id="like-icon" data-blog="{{blog.id}}" class="fa fa-heart" ></i></a>
+                                          {% else %}
+                                          <a href="javascript:void(0);"><i id="like-icon" data-blog="{{blog.id}}" class="fa fa-heart empty-heart"></i></a>
+                                          {% endif %}
+                                      </div>
+                                  </div>
+                              {% else %}
+                              <div class="social-share-block">
+                                  <div class="post-like">
+                                      {{blog.likes.count}}
+                                      {% if liked_by %}
+                                      <a href="{% url 'login' %}"><i id="like-icon" class="fa fa-heart"></i></a>
+                                      {% else %}
+                                      <a href="{% url 'login' %}"><i id="like-icon" class="fa fa-heart empty-heart"></i></a>
+                                      {% endif %}
+                                  </div>
+                              </div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <!-- End Post Content  -->
+                    <figure class="wp-block-image alignwide text-center">
+                        <img src="{{blog.banner.url}}" alt="Post Images">
+                    </figure>
+                    <p>{{blog.description|safe}}</p>
+  
+                    <div class="tagcloud">
+                      {% if blog.tags.all.count > 0 %}
+                      {% for tag in blog.tags.all %}
+                      <a href="{% url 'tag_blogs' tag.slug %}">{{tag.title}}</a>
+                      {% endfor %}
+                      {% else %}
+                      <a >No Tags</a>
+                      {% endif %}
+                    </div>
+                    <div class="axil-total-comment-post">
+                        <div class="title">
+                          {% if blog.blog_comments.all.count == 1 %}
+                          <h4 class="mb--0">{{blog.blog_comments.all.count}} Comment</h4>
+                          {% else %}
+                          <h4 class="mb--0">{{blog.blog_comments.all.count}} Comments</h4>
+                          {% endif %}
+                        </div>
+                    </div>
+                    <h4 class="title">Post a comment</h4>
+                          <form id="comment" action="{% url 'blog_details' blog.slug %}" method="POST">
+                            {% csrf_token %}           
+                              <div class="row row--10">
+                                  <div class="col-12">
+                                      <div class="form-group">
+                                          <label for="message">Your Comment</label>
+                                          <textarea name="text" id="message" placeholder="Type your comment" required=""></textarea>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-12">
+                                    {% if request.user.is_authenticated %}
+                                      <div class="form-submit cerchio">
+                                          <input name="submit" type="submit" id="form-submit" class="axil-button button-rounded" value="Post Comment">
+                                      </div>
+                                    {% else %}
+                                    <div class="form-submit cerchio">
+                                        <a href="{% url 'login' %}" class="axil-button button-rounded">
+                                            Login to comment
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                  </div>
+                              </div>
+                          </form>
+
+                          <ul class="comment-list">
+                            {% for comment in blog.blog_comments.all %}
+                              <!-- Start Single Comment  -->
+                              <li class="comment">
+                                  <div class="comment-body">
+                                      <div class="single-comment">
+                                          <!--<div class="comment-img">
+                                              <img src="{{comment.user.get_profile_picture}}" alt="Author Images">
+                                          </div>-->
+                                          <div class="comment-inner">
+                                              <h6 class="commenter">
+                                                  <a class="hover-flip-item-wrapper" >
+                                                      <span class="hover-flip-item">
+                                                          <span data-text="{{comment.user.username}}">{{comment.user.username}}</span>
+                                                      </span>
+                                                  </a>
+                                              </h6>
+                                              <div class="comment-meta">
+                                                  <div class="time-spent">{{comment.created_date}}</div>
+                                                  <div class="reply-edit">
+                                                      <div class="reply">
+                                                          <a class="comment-reply-link hover-flip-item-wrapper" href="#">
+                                                              <span class="hover-flip-item">
+                                                                  <span data-text="Reply">Reply</span>
+                                                              </span>
+                                                          </a>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="comment-text">
+                                                  <p class="b2">{{comment.text}}
+                                                  </p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <ul class="children">
+                                      <!-- Start Single Comment  -->
+                                      <li class="comment">
+                                          <div class="comment-body">
+                                              <div class="single-comment">
+                                                  <div class="comment-img">
+                                                      <img src="{% static 'images/post-images/author/author-image-2.png' %}" alt="Author Images">
+                                                  </div>
+                                                  <div class="comment-inner">
+                                                      <h6 class="commenter">
+                                                          <a class="hover-flip-item-wrapper" href="#">
+                                                              <span class="hover-flip-item">
+                                                                  <span data-text="User Name2">User Name2</span>
+                                                              </span>
+                                                          </a>
+                                                      </h6>
+                                                      <div class="comment-meta">
+                                                          <div class="time-spent">date
+                                                          </div>
+                                                          <div class="reply-edit">
+                                                              <div class="reply">
+                                                                  <a class="comment-reply-link hover-flip-item-wrapper" href="#">
+                                                                      <span class="hover-flip-item">
+                                                                          <span data-text="Reply">Reply</span>
+                                                                      </span>
+                                                                  </a>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                      <div class="comment-text">
+                                                          <p class="b2">Lorem Ipsum is simply dummy text of the 
+                                                              printing and typesetting industry. Lorem Ipsum has 
+                                                              been the industry's standard dummy text ever since the 1500s, 
+                                                              when an unknown printer took a galley of type and scrambled it to </p>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <!-- End Single Comment  -->
+                                  </ul>
+                              </li>
+                              <!-- End Single Comment  -->
+                              {% endfor %}
+                          </ul>
+
+                  </div>
+              </div>
+              <!-- End About Area  -->
+          </div>
+          {% include 'widget.html' %}
+      </div>
+  </div>
+</div>
+
+<!-- End Post List Wrapper  -->
+{% include 'category_footer.html' %}
+
+{% endblock content %}

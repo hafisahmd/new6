@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Category Blogs {% endblock title %}
+
+{% block content %}
+    <!-- Start Breadcrumb Area  -->
+    <div class="axil-breadcrumb-area breadcrumb-style-1 bg-color-grey">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="inner">
+                      <h1 class="page-title">Title</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- End Breadcrumb Area  -->
+  <!-- Start Post List Wrapper  -->
+  <div class="axil-post-list-area axil-section-gap bg-color-white">
+      <div class="container">
+            <div class="row">
+              <div class="col-lg-8 col-xl-8">
+                {% for blog in blogs %}
+                {% include 'blog_card.html' %}
+                {% endfor %}
+              </div>
+                {% include 'widget.html' with blogs=all_blogs %}
+                {% include 'pagination.html' %}
+            </div>
+        </div>
+      </div>
+      {% include 'category_footer.html' %}
+      
+{% endblock content %}

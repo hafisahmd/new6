@@ -1,0 +1,82 @@
+{% load static %}
+
+<div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
+    <!-- Start Sidebar Area  -->
+    <div class="sidebar-inner">
+        <!-- Start Single Widget  -->
+        <div class="axil-single-widget widget widget_search mb--30">
+            <h5 class="widget-title">Search</h5>
+            <form action="{% url 'search_blogs' %}" method="GET">
+                <div class="axil-search form-group">
+                    <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
+                    <input type="text" name="search" class="form-control" placeholder="Search">
+                </div>
+            </form>
+        </div>
+        <!-- End Single Widget  -->
+
+        <!-- Start Single Widget  -->
+        <div class="axil-single-widget widget widget_postlist mb--30">
+            <h5 class="widget-title">Most Recent Posts</h5>
+            <!-- Start Post List  -->
+            <div class="post-medium-block">
+                {% for blog in blogs|slice:"4" %}
+                <div class="content-block post-medium mb--20">
+                    <div class="post-thumbnail">
+                        <a href="post-details.html">
+                            <img src="{{blog.banner.url}}" alt="Post Images">
+                        </a>
+                    </div>
+                    <div class="post-content">
+                        <h6 class="title"><a href="{% url 'blog_details' blog.slug %}">{{blog.title}}</a></h6><br>
+                        <div class="post-meta">
+                            <ul class="post-meta-list">
+                                <li>{{blog.created_date}}</li>
+                            </ul>
+                        </div>
+                        <div class="post-meta">
+                            <ul class="post-meta-list">
+                                {% if blog.blog_comments.all.count == 1 %}
+                                    <li>{{blog.blog_comments.all.count}} Comment</li>
+                                {% else %}
+                                    <li>{{blog.blog_comments.all.count}} Comments</li>
+                                {% endif %}
+                                {% if blog.likes.count == 1 %}
+                                    <li>{{blog.likes.count}} Like</li>
+                                {% else %}
+                                    <li>{{blog.likes.count}} Likes</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- End Post List  -->
+
+        </div>
+        <!-- End Single Widget  -->
+        <div class="axil-single-widget widget widget_postlist mb--30">
+            <h5 class="widget-title">Recent Tags</h5>
+        <div class="tagcloud">
+            {% for tag in tags %}
+                <a href="{% url 'tag_blogs' tag.slug %}">{{tag.title}}</a>
+            {% endfor %}
+          </div>
+        </div>
+        <!-- Start Single Widget  -->
+        <div class="axil-single-widget widget widget_social mb--30">
+            <h5 class="widget-title">Connect</h5>
+            <!-- Start Post List  -->
+            <ul class="social-icon md-size justify-content-center">
+                <li><a href="https://www.facebook.com/profile.php?id=100094000290790"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="https://www.instagram.com/amppsocial/"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="https://www.linkedin.com/feed/update/urn:li:activity:7084088070173569024?updateEntityUrn=urn%3Ali%3Afs_feedUpdate%3A%28V2%2Curn%3Ali%3Aactivity%3A7084088070173569024%29"><i class="fab fa-linkedin-in"></i></a></li>
+                <li><a href="https://wa.me/919562551114"><i class="fab fa-whatsapp"></i></a></li>
+            </ul>
+            <!-- End Post List  -->
+        </div>
+        <!-- End Single Widget  -->
+    </div>
+    <!-- End Sidebar Area  -->
+</div>

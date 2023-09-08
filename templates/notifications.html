@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Notifications {% endblock title %}
+
+{% block content %}
+
+<div class="row">
+    {% if notifications %}
+    {% for notification in notifications %}
+    {% if notification.content_object %}
+    <div class="col-md-6 m-auto">
+        <div style="margin-top:100px" class="container ">
+            {% if notification.notification_types == 'Blog' or  notification.notification_types == 'Like'%}
+                <a  href="{% url 'blog_details' notification.content_object.slug %}" class="text-center font-weight-bold fs-2"> 
+                    <span style="margin-right: 5px;">
+                        <i class="fa fa-bell text-success"></i>
+                    </span>{{notification.text}}
+                </a><br>
+                <p>{{notification.created_date|timesince}} ago</p>
+                </div>
+            {% else %}
+                <a  href="{% url 'view_user_information' notification.content_object.followed_by.username %}" class="text-center font-weight-bold fs-2"> 
+                    <span style="margin-right: 5px;">
+                        <i class="fa fa-bell text-success"></i>
+                    </span>{{notification.text}}
+                </a><br>
+                <p>{{notification.created_date|timesince}} ago</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock content %}

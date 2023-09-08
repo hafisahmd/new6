@@ -1,0 +1,28 @@
+{% load static %}
+<!-- Start Single Post  -->
+{% for blog in blogs %}
+{% if blog.category.slug == 'business-stretegic-insights' %}
+<div class="slick-single-layout">
+    <div class="content-block modern-post-style text-center content-block-column">
+        <div class="post-content">
+            <div class="post-cat">
+                <div class="post-cat-list">
+                    <a class="hover-flip-item-wrapper" href="{% url 'category_blogs' blog.category.slug %}">
+                        <span class="hover-flip-item">
+                            <span data-text="{{blog.category}}">{{blog.category}}</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <h4 class="title"><a href="{% url 'blog_details' blog.slug %}">{{blog.title}}</a></h4>
+        </div>
+        <div class="post-thumbnail">
+            <a href="{% url 'blog_details' blog.slug %}">
+                <img src="{{blog.banner.url}}" alt="Post Images">
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+<!-- End Single Post  -->
